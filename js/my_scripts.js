@@ -35,8 +35,11 @@ function YQLQuery(query, callback) {
   function fct() {
     console.log("!!!");
     var data = "",
-    url = "",
-    neededUrl = 'https://www.gismeteo.by/weather-minsk-4248/month/';
+        oldResult = "",
+        clickInput = this,
+        neededUrl = 'https://www.gismeteo.by/weather-minsk-4248/month/';
+    
+    clickInput.disabled = 'true';
 
    // var query = "select * from html where url='"+ neededUrl +"'";
   
@@ -44,14 +47,17 @@ function YQLQuery(query, callback) {
 
     // Define your callback:
     var callback = function(data) {
-        //var post = data.query.results.item;
-        //alert(post.title);
       var result = data.query.results;
-        console.log(result);      
+        console.log(result);
+        if ( result === oldResult) {
+          return;
+        }
         // console.log(JSON.stringify(result));
-
+          
       var newData = parseGismeteo(result);
        console.log('newData = ' + JSON.stringify(newData[10]));
+      
+      clickInput.disabled = 'false';
     };
 
     // Instantiate with the query:
