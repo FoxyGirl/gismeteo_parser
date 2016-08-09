@@ -26,15 +26,14 @@ function YQLQuery(query, callback) {
             document.body.removeChild(scriptEl);
         };
 
-        scriptEl.src = 'http://query.yahooapis.com/v1/public/yql?q='
-                     + encodedQuery + '&format=json&callback=YQLQuery.' + uid; 
+        scriptEl.src = 'http://query.yahooapis.com/v1/public/yql?q=' + encodedQuery + '&format=json&callback=YQLQuery.' + uid; 
         document.body.appendChild(scriptEl);
 
     };
 } 
 
   function fct() {
-    console.log("adfas");
+    console.log("!!!");
     var data = "",
     url = "",
     neededUrl = 'https://www.gismeteo.by/weather-minsk-4248/month/';
@@ -49,9 +48,9 @@ function YQLQuery(query, callback) {
     xhr.send();
     console.log(data);
     
-
+/*
     var query = "select * from html where url='"+ neededUrl +"'";
-    
+ */   
     var query = "select * from html where url=\"https://www.gismeteo.by/weather-minsk-4248/month/\" and xpath='//div[contains(@class,\"cell_content\")]'";
 
     // Define your callback:
