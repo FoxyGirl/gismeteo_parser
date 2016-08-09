@@ -49,17 +49,8 @@ function YQLQuery(query, callback) {
       var result = data.query.results;
         console.log(result);      
         // console.log(JSON.stringify(result));
-        var newData = [];
-        for (var i = 0, l = result['div'].length; i < l; i++) {
-          console.log(result['div'][i]);
-          console.log(result['div'][i]['div'][0]);
-          
-          newData[i] = {};
-          newData[i]['date'] = trim(result['div'][i]['div'][0]['a']['content']);
-          console.log('date = ' + newData[i]['date']);
-        }
-        
 
+      parseGismeteo(result);
     };
 
     // Instantiate with the query:
@@ -71,4 +62,30 @@ function YQLQuery(query, callback) {
 
 function trim(str) {
   return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+}
+
+function parseGismeteo(resultJSON) {
+  var result = resultJSON;
+  var newData = [];
+  for (var i = 0, l = result['div'].length; i < l; i++) {
+   // console.log(result['div'][i]);
+
+    newData[i] = {};
+    if ( i < 10 ) {
+      newData[i]['date'] = trim(result['div'][i]['div'][0]['a']['content']);
+    } else {
+      newData[i]['date'] = trim(result['div'][i]['div'][0]['content']);
+    }
+    
+    newData[i]['temp_max'] = trim(result['div'][i]['div'][2]['div'][0]['data-value']);
+    
+    newData[i]['temp_min'] = trim(result['div'][i]['div'][2]['div'][1]['data-value']);
+    
+    console.log('date = ' + newData[i]['date']);
+    console.log('temp_max = ' + newData[i]['temp_max']);
+    console.log('temp_min = ' + newData[i]['temp_min']);
+    
+  }
+  
+  console.log('newData = ' + JSON.stringify(newData[10]));
 }
