@@ -38,20 +38,9 @@ function YQLQuery(query, callback) {
     url = "",
     neededUrl = 'https://www.gismeteo.by/weather-minsk-4248/month/';
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
-    xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4){
-        data = xhr.responseText;
-        }
-    };
-    xhr.send();
-    console.log(data);
-    
-/*
-    var query = "select * from html where url='"+ neededUrl +"'";
- */   
-    var query = "select * from html where url=\"https://www.gismeteo.by/weather-minsk-4248/month/\" and xpath='//div[contains(@class,\"cell_content\")]'";
+   // var query = "select * from html where url='"+ neededUrl +"'";
+  
+    var query = "select * from html where url=\""+ neededUrl +"\" and xpath='//div[contains(@class,\"cell_content\")]'";
 
     // Define your callback:
     var callback = function(data) {
@@ -65,9 +54,8 @@ function YQLQuery(query, callback) {
           console.log(result['div'][i]);
           console.log(result['div'][i]['div'][0]);
           
-          //newData[i].date = result['div'][i]['div'][0]['a']['content'];
           newData[i] = {};
-          newData[i]['date'] = result['div'][i]['div'][0]['a']['content'];
+          newData[i]['date'] = trim(result['div'][i]['div'][0]['a']['content']);
           console.log('date = ' + newData[i]['date']);
         }
         
@@ -80,3 +68,7 @@ function YQLQuery(query, callback) {
     // If you're ready then go:
     firstFeedItem.fetch(); // Go!!
   }
+
+function trim(str) {
+  return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+}
