@@ -77,13 +77,14 @@ function trim(str) {
 }
 
 function parseGismeteo(resultJSON) {
-  var result = resultJSON;
-  var newData = [];
+  var result = resultJSON,
+      newData = [],
+      ANCHORS_COUNT = 10;
   for (var i = 0, l = result.div.length; i < l; i++) {
    // console.log(result['div'][i]);
 
     newData[i] = {};
-    if ( i < 10 ) {
+    if ( i < ANCHORS_COUNT ) {
       newData[i].date = trim(result.div[i].div[0].a.content);
     } else {
       newData[i].date = trim(result.div[i].div[0].content);
@@ -97,7 +98,6 @@ function parseGismeteo(resultJSON) {
       newData[i].temp_min = trim(result.div[i].div[2].div[1].span.content);
     }
     
-    console.log('temp_min = ' + newData[i].temp_min);
   }
   
   //console.log('newData = ' + JSON.stringify(newData[10]));
@@ -105,17 +105,24 @@ function parseGismeteo(resultJSON) {
 }
 
 function createTable(newData, outElem) {
-  var fragment = document.createDocumentFragment();
-  var table = document.createElement('table');
-  var thead = document.createElement('thead');
-  var tbody = document.createElement('tbody');
-  var tr = document.createElement('tr');
+  var fragment = document.createDocumentFragment(),
+      table = document.createElement('table'),
+      thead = document.createElement('thead'),
+      tbody = document.createElement('tbody'),
+      tr = document.createElement('tr'),
+      now = new Date(),
+      month_1  = now.getMonth(),
+      month_2, 
+      monthStr = ' / ' + (month_1 + 1),
+      datePrev = 0,
+      dateNew = 0;
+  var th, trTbody, tdDate, tdTempMax, tdTempMin;
   
   //Create thead
   var thArray = ['Date', 'Temp max', 'Temp min'];
   
   for ( var i = 0; i < thArray.length; i++ ) {
-    var th = document.createElement('th');
+    th = document.createElement('th');
     th.appendChild(document.createTextNode(thArray[i]));
     tr.appendChild(th);
   }
@@ -125,14 +132,21 @@ function createTable(newData, outElem) {
   
   //Create tbody
   for ( var i = 0, l = newData.length; i < l; i++ ) {
-    var trTbody = document.createElement('tr');
+    trTbody = document.createElement('tr');
     
-    var tdDate = document.createElement('td');
-    tdDate.appendChild(document.createTextNode(newData[i].date));
+    tdDate = document.createElement('td');
     
-    var tdTempMax = document.createElement('td');    tdTempMax.appendChild(document.createTextNode(newData[i].temp_max)); 
+    //correct month
+    dateNew = parseInt(newData[i].date, 10);
+    if (( dateNew < datePrev) && ( month_2 === undefined )) {
+      monthStr = ' / ' + (month_1 + 2);
+    }
+    datePrev = dateNew;
+    tdDate.appendChild(document.createTextNode(newData[i].date + monthStr));
     
-    var tdTempMin = document.createElement('td');    tdTempMin.appendChild(document.createTextNode(newData[i].temp_min));
+    tdTempMax = document.createElement('td');    tdTempMax.appendChild(document.createTextNode(newData[i].temp_max)); 
+    
+    tdTempMin = document.createElement('td');    tdTempMin.appendChild(document.createTextNode(newData[i].temp_min));
     
     trTbody.appendChild(tdDate);
     trTbody.appendChild(tdTempMax);
