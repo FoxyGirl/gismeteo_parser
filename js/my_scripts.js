@@ -89,10 +89,15 @@ function parseGismeteo(resultJSON) {
       newData[i].date = trim(result.div[i].div[0].content);
     }
     
-    newData[i].temp_max = trim(result.div[i].div[2].div[0]['data-value']);
+    newData[i].temp_max = trim(result.div[i].div[2].div[0].span.content);
     
-    newData[i].temp_min = trim(result.div[i].div[2].div[1]['data-value']);
+    if ( i  === 0 ) {
+      newData[i].temp_min = trim(result.div[i].div[2].div[1].span[1].content);
+    } else {
+      newData[i].temp_min = trim(result.div[i].div[2].div[1].span.content);
+    }
     
+    console.log('temp_min = ' + newData[i].temp_min);
   }
   
   //console.log('newData = ' + JSON.stringify(newData[10]));
