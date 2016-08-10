@@ -8,6 +8,7 @@
 
 var oldResult = "";
 
+
 function YQLQuery(query, callback) {
     this.query = query;
     this.callback = callback || function(){};
@@ -46,23 +47,22 @@ function fct() {
 
   var query = "select * from html where url=\""+ neededUrl +"\" and xpath='//div[contains(@class,\"cell_content\")]'";
 
-  // Define your callback:
+  // Define callback:
   var callback = function(data) {
     var result = data.query.results;
       console.log(result);
       //if result not be changed do nothing
       if ( JSON.stringify(result) === oldResult) {
+        clickInput.disabled = false;
         return;
       }
       oldResult = JSON.stringify(result);
-      // console.log(JSON.stringify(result));
 
       var newData = parseGismeteo(result);
        console.log('newData = ' + JSON.stringify(newData[10]));
-
-      createTable(newData);
+      var outElem = document.getElementById('resultTable');
+      createTable(newData, outElem);
       clickInput.disabled = false;
-
   };
 
   // Instantiate with the query:
@@ -99,8 +99,7 @@ function parseGismeteo(resultJSON) {
   return newData;
 }
 
-function createTable(newData) {
-  var out = document.getElementById('resultTable');
+function createTable(newData, outElem) {
   var fragment = document.createDocumentFragment();
   var table = document.createElement('table');
   var thead = document.createElement('thead');
@@ -140,5 +139,6 @@ function createTable(newData) {
   table.appendChild(tbody);
   fragment.appendChild(table);
   
-  out.appendChild(table);
+  outElem.innerHTML = '';
+  outElem.appendChild(table);
 }
