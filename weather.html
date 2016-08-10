@@ -1,47 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Weather in Minsk</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/styles.css">  
+  <link rel="stylesheet" href="css/styles.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
+
 <body>
- <div>
-  <input type="button" value="Click" id="weatherShow"/>
-  <!--
+  <div class="wrap">
+    <div class="control">
+      <input type="button" value="Click" id="weatherShow" />
+      <!--
    <button class="btn" id="weatherShow">Show weather</button>
    -->
- </div>
-    <!--  
-    <iframe src="https://www.gismeteo.by/weather-minsk-4248/month/" width="900" height="900" align="left">
-    Ваш браузер не поддерживает плавающие фреймы!
-     </iframe>
-     
-     -->
- <div class="new-table" id="resultTable">
+    </div>
 
- </div>
- <hr>
-    <table>
-    <thead>
-     <tr>
-       <th>Date</th>
-       <th>Temp max</th>
-       <th>Temp min</th>
-     </tr>
-    </thead>
-    <tbody>
-     <tr>
-       <td>25/08</td>
-       <td>26</td>
-       <td>17</td>
-     </tr>
-     </tbody>     
-   </table>
-  
+    <div class="new-table" id="resultTable">
+
+    </div>
+    <hr>
+    <div class="new-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Temp max</th>
+            <th>Temp min</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>25/08</td>
+            <td>26</td>
+            <td>17</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <script src="js/my_scripts.js"></script>
-    
+
 </body>
+
 </html>

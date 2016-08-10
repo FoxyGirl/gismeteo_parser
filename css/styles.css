@@ -1,10 +1,46 @@
-table {
-  width: 80%;
+html {
+  font-family: Tahoma, Arial, sans-serif;
+  font-size: 14px;
+}
+.wrap {
+  max-width: 800px;
   margin: 0 auto;
 }
 
-table th,
-table td {
+.control {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+.control input {
+  padding: 5px 15px;
+  border-radius: 5px;
+}
+
+.new-table table {
+  width: 80%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.new-table table tr {
+  border-bottom: 1px solid #333;
+  background: #fff;
+}
+
+.new-table thead tr {
+  background: blue;
+  color: #fff;
+}
+
+.new-table tbody tr:nth-child(even) {
+  background: lightcyan;
+}
+
+.new-table table th,
+.new-table table td {
   padding: 5px;
   text-align: center;
 }
