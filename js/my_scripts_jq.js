@@ -82,6 +82,24 @@ $(document).ready(function() {
     }
     
     table.append(tableThead.append(newRow));
+    
+    //Create tbody
+    for ( var i = 0, l = newData.length; i < l; i++ ) {
+      newRow = tableRow.clone();
+      /*
+      if ( i === 0 ) {
+        newRow.append(tableCellMonth.clone().text('month'));
+      } else {
+        
+      }*/
+      newRow.append(tableCell.clone().text(newData[i].date))
+            .append(tableCell.clone().text(newData[i].temp_max))
+            .append(tableCell.clone().text(newData[i].temp_min));
+      tableTbody.append(newRow);
+    }
+    
+    table.append(tableTbody);
+    
     outElem.empty().append(table).slideDown();
   }
 });
