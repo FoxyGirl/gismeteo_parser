@@ -21,7 +21,7 @@ $(document).ready(function() {
       dataType: 'html',
       async: true,
       success: function(data) {
-        $('#resultTable').append($(data).find('results').find('.forecast_frame'));
+        $('#resultTable').append($(data).find('results').find('.forecast_frame')).hide();
 
         var monthes = [];
         $('#resultTable').find('._monthName').each(function() {
@@ -34,7 +34,7 @@ $(document).ready(function() {
         console.log('cellContent = ' + cellContent.length);
         var newData = parseGismeteo(cellContent);
             console.log(JSON.stringify(newData));
-
+        createTable(newData, $('#resultTable'));
       },
       error: function() {
           alert('Извините на сервере произошла ошибка');
@@ -62,5 +62,26 @@ $(document).ready(function() {
       newData.push(obj);
     });
     return newData;
+  }
+
+  function createTable(newData, outElem) {
+    var table = $('<table></table>'),
+        tableThead = $('<thead></thead>'),
+        tableTbody = $('<tbody></tbody>'),
+        tableRow = $('<tr></tr>'),
+        tableCell = $('<td></td>'),
+        tableCellHead = $('<th></th>'),
+        tableCellMonth = $('<td collspan="3"></td>');
+    
+    //Create thead
+    var thArray = ['Date', 'Temp max', 'Temp min'];
+    var newRow = tableRow.clone();
+    for  (var i = 0, l = thArray.length;  i < l; i++ ) {
+      newRow.append(tableCellHead.clone().text(thArray[i]));
+      console.log(newRow);
+    }
+    
+    table.append(tableThead.append(newRow));
+    outElem.empty().append(table).slideDown();
   }
 });
