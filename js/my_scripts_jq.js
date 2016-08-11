@@ -3,6 +3,8 @@
 /* jshint devel: true */
 
 $(document).ready(function() {
+  var helper = $('#helper');
+  helper.hide();
   $('#weatherShow').on('click', weatherHandler);
   
   function weatherHandler() {
@@ -22,20 +24,22 @@ $(document).ready(function() {
       dataType: 'html',
       async: true,
       success: function(data) {
-        $('#resultTable').append($(data).find('results').find('.forecast_frame')).hide();
+      
+        helper.append($(data).find('results').find('.forecast_frame'));
 
         var monthes = [];
-        $('#resultTable').find('._monthName').each(function() {
+        helper.find('._monthName').each(function() {
           var name = $(this).find('h2').text();
           monthes.push($.trim(name));
         });
         console.log(monthes);
 
-        var cellContent = $('.cell_content');
+        var cellContent = helper.find('.cell_content');
         console.log('cellContent = ' + cellContent.length);
         var newData = parseGismeteo(cellContent);
         //    console.log(JSON.stringify(newData));
         createTable(newData, monthes, $('#resultTable'));
+        helper.empty();
       },
       error: function() {
           alert('Извините на сервере произошла ошибка');
