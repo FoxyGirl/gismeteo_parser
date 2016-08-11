@@ -10,13 +10,14 @@ $(document).ready(function() {
     var clickInput = $(this);
     
     var directoryName = 'anthropology';
+    var neededUrl = '"https://www.gismeteo.by/weather-minsk-4248/month/"';
   
-    var newUrl = 'select * from html where url="https://www.gismeteo.by/weather-minsk-4248/month/"';
+    var newQuery = 'select * from html where url=' + neededUrl;
     
     $.ajax({
       type: 'GET',
      // url: "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D%22http%3A%2F%2Fdirectory.vancouver.wsu.edu%2F"+directoryName+"%22%20and%20xpath%3D%22%2F%2Fdiv%5B%40id%3D'content-area'%5D%22",
-      url: "http://query.yahooapis.com/v1/public/yql?q=" + encodeURIComponent(newUrl),
+      url: "http://query.yahooapis.com/v1/public/yql?q=" + encodeURIComponent(newQuery),
 
       dataType: 'html',
       async: true,
@@ -33,7 +34,7 @@ $(document).ready(function() {
         var cellContent = $('.cell_content');
         console.log('cellContent = ' + cellContent.length);
         var newData = parseGismeteo(cellContent);
-            console.log(JSON.stringify(newData));
+        //    console.log(JSON.stringify(newData));
         createTable(newData, monthes, $('#resultTable'));
       },
       error: function() {
@@ -50,7 +51,6 @@ $(document).ready(function() {
   
   function parseGismeteo(cellContent) {
     var newData = [];
-    //newData.push({'date' : []});
     cellContent.each(function(){
       var obj = {};
       var date = $(this).find('.date').find('a').text() || $(this).find('.date').text();
@@ -107,6 +107,6 @@ $(document).ready(function() {
     
     table.append(tableTbody);
     
-    outElem.empty().append(table).slideDown();
+    outElem.empty().append(table).show();
   }
 });
