@@ -34,7 +34,7 @@ $(document).ready(function() {
         console.log('cellContent = ' + cellContent.length);
         var newData = parseGismeteo(cellContent);
             console.log(JSON.stringify(newData));
-        createTable(newData, $('#resultTable'));
+        createTable(newData, monthes, $('#resultTable'));
       },
       error: function() {
           alert('Извините на сервере произошла ошибка');
@@ -64,38 +64,45 @@ $(document).ready(function() {
     return newData;
   }
 
-  function createTable(newData, outElem) {
+  function createTable(newData, monthArray, outElem) {
     var table = $('<table></table>'),
         tableThead = $('<thead></thead>'),
         tableTbody = $('<tbody></tbody>'),
         tableRow = $('<tr></tr>'),
         tableCell = $('<td></td>'),
         tableCellHead = $('<th></th>'),
-        tableCellMonth = $('<td collspan="3"></td>');
+        tableCellMonth = $('<td colspan="3"></td>'),
+        month_1 = monthArray[0],
+        month_2,
+        datePrev = 0,
+        dateNew;
     
     //Create thead
     var thArray = ['Date', 'Temp max', 'Temp min'];
     var newRow = tableRow.clone();
     for  (var i = 0, l = thArray.length;  i < l; i++ ) {
       newRow.append(tableCellHead.clone().text(thArray[i]));
-      console.log(newRow);
     }
     
     table.append(tableThead.append(newRow));
     
     //Create tbody
+    tableTbody.append(tableRow.clone()
+              .append(tableCellMonth.clone().text(month_1)));
     for ( var i = 0, l = newData.length; i < l; i++ ) {
+      dateNew = parseInt(newData[i].date, 10);
+      if (( dateNew < datePrev ) && ( month_2 === undefined )) {
+        tableTbody.append(tableRow.clone()
+              .append(tableCellMonth.clone().text(monthArray[1])));
+        console.log('!!!' + monthArray[1]);
+      } 
+      datePrev = dateNew;
+      
       newRow = tableRow.clone();
-      /*
-      if ( i === 0 ) {
-        newRow.append(tableCellMonth.clone().text('month'));
-      } else {
-        
-      }*/
       newRow.append(tableCell.clone().text(newData[i].date))
             .append(tableCell.clone().text(newData[i].temp_max))
             .append(tableCell.clone().text(newData[i].temp_min));
-      tableTbody.append(newRow);
+      tableTbody.append(newRow);     
     }
     
     table.append(tableTbody);
