@@ -5,15 +5,13 @@
 $(document).ready(function() {
   var helper = $('#helper');
   helper.hide();
+  
   $('#weatherShow').on('click', weatherHandler);
   
   function weatherHandler() {
-    console.log($(this));
-    var clickInput = $(this);
-    
-    var neededUrl = '"https://www.gismeteo.by/weather-minsk-4248/month/"';
-  
-    var newQuery = 'select * from html where url=' + neededUrl;
+    var clickInput = $(this),    
+        neededUrl = '"https://www.gismeteo.by/weather-minsk-4248/month/"',  
+        newQuery = 'select * from html where url=' + neededUrl;
     
     $.ajax({
       type: 'GET',
@@ -21,27 +19,28 @@ $(document).ready(function() {
       dataType: 'html',
       async: true,
       success: function(data) {
-      
-        helper.append($(data).find('results').find('.forecast_frame'));
+        if (data) {      
+          helper.append($(data).find('results').find('.forecast_frame'));
 
-        var monthes = [];
-        helper.find('._monthName').each(function() {
-          var name = $(this).find('h2').text();
-          monthes.push($.trim(name));
-        });
-        console.log(monthes);
-        localStorage.setItem('monthes', JSON.stringify(monthes));
+          //find monthes
+          var monthes = [];
+          helper.find('._monthName').each(function() {
+            var name = $(this).find('h2').text();
+            monthes.push($.trim(name));
+          });
+          localStorage.setItem('monthes', JSON.stringify(monthes));
 
-        var cellContent = helper.find('.cell_content');
-        console.log('cellContent = ' + cellContent.length);
-        var newData = parseGismeteo(cellContent);
-        localStorage.setItem('weather', JSON.stringify(newData));
-        helper.empty();
-    
-        //    console.log(JSON.stringify(newData));
-        monthes = JSON.parse(localStorage.getItem('monthes'));
-        newData = JSON.parse(localStorage.getItem('weather'));
-        createTable(newData, monthes, $('#resultTable'));
+          //find required data
+          var cellContent = helper.find('.cell_content');
+          var newData = parseGismeteo(cellContent);
+          localStorage.setItem('weather', JSON.stringify(newData));
+
+          helper.empty();
+
+          monthes = JSON.parse(localStorage.getItem('monthes'));
+          newData = JSON.parse(localStorage.getItem('weather'));
+          createTable(newData, monthes, $('#resultTable'));
+        }
       },
       error: function() {
           alert('Извините на сервере произошла ошибка');
@@ -95,12 +94,12 @@ $(document).ready(function() {
     //Create tbody
     tableTbody.append(tableRow.clone()
               .append(tableCellMonth.clone().text(month_1)));
+    
     for ( var i = 0, l = newData.length; i < l; i++ ) {
       dateNew = parseInt(newData[i].date, 10);
       if (( dateNew < datePrev ) && ( month_2 === undefined )) {
         tableTbody.append(tableRow.clone()
-              .append(tableCellMonth.clone().text(monthArray[1])));
-        console.log('!!!' + monthArray[1]);
+                  .append(tableCellMonth.clone().text(monthArray[1])));
       } 
       datePrev = dateNew;
       
@@ -108,11 +107,11 @@ $(document).ready(function() {
       newRow.append(tableCell.clone().text(newData[i].date))
             .append(tableCell.clone().text(newData[i].temp_max))
             .append(tableCell.clone().text(newData[i].temp_min));
+      
       tableTbody.append(newRow);     
     }
     
-    table.append(tableTbody);
-    
+    table.append(tableTbody);    
     outElem.empty().append(table).show();
   }
 });
