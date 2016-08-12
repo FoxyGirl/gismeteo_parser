@@ -3,6 +3,7 @@
 /* jshint devel: true */
 
 $(document).ready(function() {
+  var oldResult = '' || localStorage.getItem('weather');
   var helper = $('#helper');
   helper.hide();
   
@@ -33,6 +34,13 @@ $(document).ready(function() {
           //find required data
           var cellContent = helper.find('.cell_content');
           var newData = parseGismeteo(cellContent);
+          //if result not be changed and table exists to do nothing
+          if (( oldResult === JSON.stringify(newData) ) && $('#resultTable table').length === 1 ) {
+            return;
+          }
+    
+          oldResult = JSON.stringify(newData);
+    
           localStorage.setItem('weather', JSON.stringify(newData));
 
           helper.empty();
