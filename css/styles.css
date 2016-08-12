@@ -14,8 +14,28 @@ html {
 }
 
 .control input {
-  padding: 5px 15px;
-  border-radius: 5px;
+  outline: none;
+}
+
+.button {
+  display: inline-block;
+  margin: 20px;
+  padding: 10px 30px;
+  font-size: 16px;
+  font-family: "Lucida Grande", Arial, sans-serif;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .2),
+0 1px 3px #aaa;
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.4);
+  color: #fff;
+  background-image: linear-gradient(
+#CC0630 0%,
+#8F0222 75%,
+#6D0019 100%
+ );
 }
 
 .new-table table {
