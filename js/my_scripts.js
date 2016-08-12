@@ -6,8 +6,7 @@
   input.addEventListener('click', fct);  
 })();
 
-var oldResult = "";
-
+var oldResult = '';
 
 function YQLQuery(query, callback) {
     this.query = query;
@@ -59,9 +58,11 @@ function fct() {
       oldResult = JSON.stringify(result);
 
       var newData = parseGismeteo(result);
+      localStorage.setItem('weather', JSON.stringify(newData));
+
        console.log('newData = ' + JSON.stringify(newData[10]));
       var outElem = document.getElementById('resultTable');
-      createTable(newData, outElem);
+      createTable(JSON.parse(localStorage.getItem('weather')), outElem);
       clickInput.disabled = false;
   };
 
