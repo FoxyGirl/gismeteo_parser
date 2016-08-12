@@ -6,7 +6,7 @@
   input.addEventListener('click', fct);  
 })();
 
-var oldResult = '';
+var oldResult = '' || localStorage.getItem('weather');
 
 function YQLQuery(query, callback) {
     this.query = query;
@@ -35,23 +35,19 @@ function YQLQuery(query, callback) {
 } 
 
 function fct() {
-  console.log("!!!");
   var data = "",        
       clickInput = this,
       neededUrl = 'https://www.gismeteo.by/weather-minsk-4248/month/';
 
   clickInput.disabled = true;
 
- // var query = "select * from html where url='"+ neededUrl +"'";
-
   var query = "select * from html where url=\""+ neededUrl +"\" and xpath='//div[contains(@class,\"cell_content\")]'";
 
   // Define callback:
   var callback = function(data) {
     var result = data.query.results;
-      console.log(result);
-      //if result not be changed do nothing
-      if ( JSON.stringify(result) === oldResult) {
+      //if result not be changed and table exists to do nothing
+      if (( JSON.stringify(result) === oldResult ) && ( document.querySelector('#resultTable table') !== null )) {
         clickInput.disabled = false;
         return;
       }
@@ -60,7 +56,6 @@ function fct() {
       var newData = parseGismeteo(result);
       localStorage.setItem('weather', JSON.stringify(newData));
 
-       console.log('newData = ' + JSON.stringify(newData[10]));
       var outElem = document.getElementById('resultTable');
       createTable(JSON.parse(localStorage.getItem('weather')), outElem);
       clickInput.disabled = false;
@@ -82,7 +77,6 @@ function parseGismeteo(resultJSON) {
       newData = [],
       ANCHORS_COUNT = 10;
   for (var i = 0, l = result.div.length; i < l; i++) {
-   // console.log(result['div'][i]);
 
     newData[i] = {};
     if ( i < ANCHORS_COUNT ) {
@@ -101,7 +95,6 @@ function parseGismeteo(resultJSON) {
     
   }
   
-  //console.log('newData = ' + JSON.stringify(newData[10]));
   return newData;
 }
 
@@ -161,4 +154,7 @@ function createTable(newData, outElem) {
   
   outElem.innerHTML = '';
   outElem.appendChild(table);
+  
+          console.log('!!!');
+
 }
