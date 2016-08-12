@@ -13,10 +13,6 @@ html {
   text-align: center;
 }
 
-.control input {
-  outline: none;
-}
-
 .button {
   display: inline-block;
   margin: 20px;
@@ -31,11 +27,12 @@ html {
 0 1px 3px #aaa;
   text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.4);
   color: #fff;
-  background-image: linear-gradient(
-#CC0630 0%,
-#8F0222 75%,
-#6D0019 100%
- );
+  background-image: linear-gradient(#CC0630 0%, #8F0222 75%, #6D0019 100%);
+  outline: none;
+}
+
+.button:disabled {
+  background-image: linear-gradient(#FFFFFF, #DDDDDD);
 }
 
 .new-table table {
