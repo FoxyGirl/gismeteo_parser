@@ -11,16 +11,13 @@ $(document).ready(function() {
     console.log($(this));
     var clickInput = $(this);
     
-    var directoryName = 'anthropology';
     var neededUrl = '"https://www.gismeteo.by/weather-minsk-4248/month/"';
   
     var newQuery = 'select * from html where url=' + neededUrl;
     
     $.ajax({
       type: 'GET',
-     // url: "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D%22http%3A%2F%2Fdirectory.vancouver.wsu.edu%2F"+directoryName+"%22%20and%20xpath%3D%22%2F%2Fdiv%5B%40id%3D'content-area'%5D%22",
       url: "http://query.yahooapis.com/v1/public/yql?q=" + encodeURIComponent(newQuery),
-
       dataType: 'html',
       async: true,
       success: function(data) {
@@ -33,13 +30,18 @@ $(document).ready(function() {
           monthes.push($.trim(name));
         });
         console.log(monthes);
+        localStorage.setItem('monthes', JSON.stringify(monthes));
 
         var cellContent = helper.find('.cell_content');
         console.log('cellContent = ' + cellContent.length);
         var newData = parseGismeteo(cellContent);
-        //    console.log(JSON.stringify(newData));
-        createTable(newData, monthes, $('#resultTable'));
+        localStorage.setItem('weather', JSON.stringify(newData));
         helper.empty();
+    
+        //    console.log(JSON.stringify(newData));
+        monthes = JSON.parse(localStorage.getItem('monthes'));
+        newData = JSON.parse(localStorage.getItem('weather'));
+        createTable(newData, monthes, $('#resultTable'));
       },
       error: function() {
           alert('Извините на сервере произошла ошибка');
